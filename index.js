@@ -29,9 +29,13 @@ async function run() {
         const menuCollection = client.db("BristoDB").collection("menu");
         const reviewsCollection = client.db("BristoDB").collection("reviews");
 
-        app.get('/menu', async(req, res) => {
+        app.get('/menu', async (req, res) => {
             const result = await menuCollection.find().toArray();
-            res.send(result)
+            res.send(result);
+        })
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewsCollection.find().toArray();
+            res.send(result);
         })
 
         // Send a ping to confirm a successful connection
