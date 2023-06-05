@@ -26,8 +26,22 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
+        const userCollection = client.db("BristoDB").collection("users");
         const menuCollection = client.db("BristoDB").collection("menu");
         const reviewsCollection = client.db("BristoDB").collection("reviews");
+
+        // user save in db
+        app.put('users/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const query = { email: email }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: user,
+            }
+            const result = await userCollection.updateOne(query, updateDoc, options)
+            res.send(result)
+        })
 
         app.get('/menu', async (req, res) => {
             const result = await menuCollection.find().toArray();
